@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 function ProfileComponent() {
   const [loading, setLoading] = useState(false);
   const [selectedImage,setSelectedImage]=useState(null);
-  const { authStatus, authUser } = useSelector((state) => state.auth);
+  const { authUser } = useSelector((state) => state.auth);
   const handleImageUpload = async (e) => {
     const file=e.target.files[0];
     if(!file) return ;
@@ -32,8 +32,7 @@ function ProfileComponent() {
     }
   };
   return (
-    <div className="pt-20">
-      <div className="max-w-2xl mx-auto p-4 py-8">
+      <div className="max-w-2xl mx-auto px-4 overflow-y-auto">
         <div className="bg-base-300 rounded-xl p-6 space-y-8">
           <div className="text-center">
             <h1 className="text-2xl font-semibold">Profile</h1>
@@ -111,7 +110,6 @@ function ProfileComponent() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

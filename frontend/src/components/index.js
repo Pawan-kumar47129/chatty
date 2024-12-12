@@ -5,4 +5,7 @@ import Navbar from "./Navbar";
 import AuthImagePattern from "./AuthImagePattern";
 import ProfileComponent from "./ProfileComponent.jsx";
 import SettingsComponent from "./SettingsComponent.jsx";
-export { SignupComponent,LoginComponent, Navbar, AuthLayout ,AuthImagePattern,ProfileComponent,SettingsComponent};
+import Sidebar from "./Sidebar.jsx";
+import NoChatSelected from "./NoChatSelected.jsx";
+import ChatContainer from "./ChatContainer.jsx";
+export { SignupComponent,LoginComponent, Navbar, AuthLayout ,AuthImagePattern,ProfileComponent,SettingsComponent,Sidebar,NoChatSelected,ChatContainer};

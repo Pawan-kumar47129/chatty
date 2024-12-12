@@ -32,8 +32,11 @@ function App() {
     return <LoaderPage />;
   }
   return (
-    <div className="flex flex-col overflow-hidden" data-theme={themeMode}>
-      <div><Navbar /></div>
+    <div className="flex flex-col h-svh" data-theme={themeMode}>
+      <div className="h-[10vh] box-border">
+      <Navbar />
+      </div>
+      <div className="h-[90vh] overflow-auto box-border">
       <Routes>
         <Route
           path="/"
@@ -77,6 +80,7 @@ function App() {
         ></Route>
       </Routes>
       <Toaster />
+      </div>
     </div>
   );
 }
