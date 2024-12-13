@@ -40,7 +40,9 @@ export const getMessages = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in getMessages Controller: ", error.message);
-    res.status(500).json({ error: "Internal Server error" });
+    res.status(500).json({ 
+      success:false,
+      message: "Internal Server error" });
   }
 };
 
@@ -48,8 +50,9 @@ export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
     const { id: receiverId } = req.params;
+    console.log(receiverId);
     const senderId = req.user._id;
-    let imageUrl;
+    let imageUrl="";
     if (image) {
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
@@ -65,9 +68,13 @@ export const sendMessage = async (req, res) => {
     await newMessage.save();
     //todo:realTime functionality goes here =>socket.io;
 
-    res.staus(201).json(newMessage);
+    res.status(201).json({
+      success: true,
+      message: "successfully sended!",
+      newMessage: newMessage,
+    });
   } catch (error) {
     console.log("Error in sendMessage controller", error.message);
-    res.status(500).json({ error: "Internal Server error" });
+    res.status(500).json({ success: false, message: "Internal Server error" });
   }
 };

@@ -5,6 +5,7 @@ let initialState={
     authUser:null,
     authStatus:false,
     loading:false,
+    onlineUsers:[],
 }
 const authSlice=createSlice({
     name:'auth',
