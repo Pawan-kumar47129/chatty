@@ -1,3 +1,4 @@
+import uploadOnCloudinary from "../lib/cloudinary.js";
 import cloudinary from "../lib/cloudinary.js";
 import { generateToken } from "../lib/utils.js";
 import User from "../models/user.models.js";
@@ -113,23 +114,30 @@ export const logout = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { profilePic } = req.body;
-    console.log(req.body);
-    console.log(profilePic);
-    const userId = req.user._id;
-    if (!profilePic) {
+    if (!req.file) {
       return res.status(400).json({
         success: false,
         message: "Profile pic is required",
       });
     }
-    const uploadResponse = await cloudinary.uploader.upload(profilePic);
-
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profilePic: uploadResponse.secure_url },
-      { new: true }
+    const user = req.user;
+    const uploadResponse = await uploadOnCloudinary(
+      req.file.path,
+      user.public_id
     );
+    if (!uploadResponse.success)
+      return res.status(400).json({
+        success: false,
+        message: "Profile pic is required",
+      });
+      const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      {
+        profilePic: uploadResponse.imageUrl,
+        public_id: uploadResponse.publicId,
+      },
+      { new: true }
+    ).select('-password');
     res.status(200).json({
       success: true,
       message: "profile update succefully",

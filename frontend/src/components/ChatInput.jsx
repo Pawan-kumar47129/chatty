@@ -8,6 +8,8 @@ import { addMessage } from "../store/chatSlice";
 function ChatInput() {
     const [inputMessage,setInputMessage]=useState("");
     const [imagePreview,setImagePreview]=useState(null);
+    const [image,setImage]=useState(null);
+    const [loading,setLoading]=useState(false);
     const dispatch=useDispatch();
     const fileInputRef=useRef(null);
     const {selectedUser}=useSelector((state)=>state.chat);
@@ -17,27 +19,31 @@ function ChatInput() {
         toast.error("Please select an image file");
         return ;
       }
+      setImage(file);
       const reader=new FileReader();
       reader.onloadend=()=>{
-        console.log("hello");
         setImagePreview(reader.result);
       }
       reader.readAsDataURL(file);
     };
     const removeImage=()=>{
       setImagePreview(null);
+      setImage(null);
       if(fileInputRef.current) fileInputRef.current.value="";
     }
     const handleSubmit=async(e)=>{
       e.preventDefault();
       if(!inputMessage.trim() && !imagePreview) return;
-      const res=await messageService.sendMessage(selectedUser._id,{text:inputMessage.trim(),
-        image:imagePreview
-      });
+      const formData = new FormData();
+      setLoading(true);
+      if(imagePreview)formData.append('image',image);
+      if(inputMessage)formData.append('text',inputMessage.trim());
+      const res=await messageService.sendMessage(selectedUser._id,formData);
       if(res.success){
         dispatch(addMessage(res.newMessage))
       }
       else{toast.error("Failed to send message")}
+      setLoading(false);
       //clear form
       setInputMessage("");
       setImagePreview(null);
@@ -88,7 +94,7 @@ function ChatInput() {
         <button 
         type="submit"
         className="btn btn-primary h-10 min-h-0" 
-        disabled={!inputMessage.trim() && !imagePreview}
+        disabled={(!inputMessage.trim() && !imagePreview)||loading}
         >
           <Send size={18} />
         </button>

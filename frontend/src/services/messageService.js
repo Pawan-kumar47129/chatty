@@ -34,7 +34,7 @@ class MessageService{
     async sendMessage(selectedUserId,messageData){
 
         try {
-            const response=await axiosInstance.post(`/messages/send/${selectedUserId}`,messageData);
+            const response=await axiosInstance.post(`/messages/send/${selectedUserId}`,messageData,{headers:{'Content-Type':'multipart/form-data'}});
             return response.data;
         } catch (error) {
             console.log("send Message services error", error.message);

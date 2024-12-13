@@ -41,9 +41,10 @@ class AuthService{
         }
     }
 
-    async updateProfile(image){
+    async updateProfile(profilePic){
+        console.log(profilePic);
         try {
-            const response=await axiosInstance.put("/auth/update-profile",{profilePic:image});
+            const response=await axiosInstance.put("/auth/update-profile",profilePic,{headers: { 'Content-Type': 'multipart/form-data' }});
             return response.data;
 
         } catch (error) {
