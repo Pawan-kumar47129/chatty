@@ -12,7 +12,7 @@ class MessageService{
         }
         try {
             const response=await axiosInstance.get("/messages/users",{signal:signal});
-            await a();
+            //await a();
             return response.data;
         } catch (error) {
             console.log("Error occure in getUsers",error.message);

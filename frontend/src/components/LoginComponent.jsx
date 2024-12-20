@@ -3,7 +3,7 @@ import authService from "../services/authService";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import AuthImagePattern from "./AuthImagePattern";
-import { loginState } from "../store/authSlice";
+import { setAuthState } from "../store/authSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 
@@ -32,19 +32,19 @@ function LoginComponent() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
-    setLoading(true); 
     if(validateForm()){
-        const res = await authService.login(formData);
+      setLoading(true); 
+        const res = await authService.login(formData);//this call api for login in backend server
         if(res.success){
           console.log(res);
-            dispatch(loginState(res.user));
+            dispatch(setAuthState(res.user));// set authState in global or redux store
             toast.success(res.message);
         }
         else{
             toast.error(res.message);
         }
+        setLoading(false);
     }
-    setLoading(false);
   };
   return (
     <div className="grid grid-cols-1 md:grid-cols-2">
@@ -150,12 +150,14 @@ function LoginComponent() {
       </div>
 
       {/* Right Side - Image/Pattern */}
+      <div className="hidden md:block">
       <AuthImagePattern
         title={"Welcome back!"}
         subtitle={
           "Sign in to continue your conversations and catch up with your messages."
         }
       />
+      </div>
     </div>
   );
 }

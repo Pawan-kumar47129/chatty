@@ -1,4 +1,5 @@
 import { axiosInstance } from "../lib/axios";
+import {io} from "socket.io-client";
 
 class AuthService{
 
@@ -8,7 +9,13 @@ class AuthService{
             return response.data;
         } catch (error) {
             console.log("checkAuth Services error :",error);
-            return error.response.data;;
+            if(!error.response){
+                return {
+                    success:false,
+                    message:"Network Error"
+                }
+            }
+            return error.response.data;
         }
     }
     async signup(data){
@@ -17,6 +24,12 @@ class AuthService{
             return response.data;
         } catch (error) {
             console.log("signup authservice error ",error);
+            if(!error.response){
+                return {
+                    success:false,
+                    message:"Network Error or Server Error!"
+                }
+            }
             return error.response.data;
         }
     }
@@ -27,6 +40,12 @@ class AuthService{
             return response.data;
         } catch (error) {
             console.log("login authservice error ",error);
+            if(!error.response){
+                return {
+                    success:false,
+                    message:"Network Error or Server Error!"
+                }
+            }
             return error.response.data;
         }
     }
@@ -37,6 +56,12 @@ class AuthService{
             return response.data;
         } catch (error) {
             console.log("login authservice error ",error);
+            if(!error.response){
+                return {
+                    success:false,
+                    message:"Network Error or Server Error!"
+                }
+            }
             return error.response.data;
         }
     }

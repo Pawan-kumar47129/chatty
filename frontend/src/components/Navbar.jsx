@@ -3,19 +3,19 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
-import { logoutState } from '../store/authSlice';
+import { clearAuthState } from '../store/authSlice';
 import toast from 'react-hot-toast';
 
 function Navbar() {
   const {authStatus,authUser}=useSelector((state)=>state.auth);
   const dispatch=useDispatch();
-  //const navigate=useNavigate();
+  const navigate=useNavigate();
   const handleLogout=async()=>{
-    const res=await authService.logout();
+    const res=await authService.logout();// this call api for logout api in backend server
     if(res.success){
-      dispatch(logoutState());
+      dispatch(clearAuthState());// delete authState from global or redux store
       toast.success(res.message);
-      //navigate('/login');
+      navigate('/login');
     }
     else{
       toast.error(res.message);

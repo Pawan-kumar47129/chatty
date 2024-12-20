@@ -2,7 +2,7 @@ import { Camera, Mail, User } from "lucide-react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import authService from "../services/authService";
-import { loginState } from "../store/authSlice";
+import {setAuthState } from "../store/authSlice";
 import toast from "react-hot-toast";
 
 function ProfileComponent() {
@@ -26,10 +26,10 @@ function ProfileComponent() {
     formData.append("profilePic", file);
 
     setLoading(true);
-    const res = await authService.updateProfile(formData);
+    const res = await authService.updateProfile(formData);//this call api for update the profilePic in backend server
     if (res.success) {
       console.log(res);
-      dispatch(loginState(res.user)); //link of profilepic
+      dispatch(setAuthState(res.user)); // update authState in store 
       toast.success("Profile update successfully!");
     } else {
       console.log(res);

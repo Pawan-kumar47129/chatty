@@ -4,6 +4,8 @@ import messageService from "../services/messageService";
 import { setAllUsers, setSelectedUser } from "../store/chatSlice";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
 import {Users } from "lucide-react";
+import { getSocket } from "../services/socketServer";
+import { setOnlineUsers } from "../store/authSlice";
 
 function Sidebar() {
   const { users, selectedUser } = useSelector((state) => state.chat);
@@ -12,6 +14,11 @@ function Sidebar() {
   const [loading, setLoading] = useState(true);
   const [filterUser, setFilterUser] = useState(users);
   const [search, setSearch] = useState("");
+  const socket=getSocket();
+  socket.on("getOnlineUsers",(userIds)=>{
+    console.log("online user")
+    dispatch(setOnlineUsers(userIds))
+  })
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -51,19 +58,20 @@ function Sidebar() {
         {/* Search  bar*/}
         <div className="label gap-1">
           <input
+            value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input pr-1 text-lg"
             placeholder="search friend..."
           />
         </div>
         {/* Todo online filter toggle */}
-        <div className="sm:overflow-y-auto w-full py-3  sm:h-[75vh] ">
+        <div className="overflow-y-auto w-full py-3 h-[75vh] ">
           {filterUser?.map((user) => (
             <button
               key={user._id}
               onClick={()=>{
                 dispatch(setSelectedUser(user));
-                setSearch('');
+                setSearch("");
               }}
               className={`w-full p-3 flex items-center gap-3 hover:bg-base-300 transition-colors${
                 selectedUser?._id === user._id
@@ -75,7 +83,7 @@ function Sidebar() {
                 <img
                   src={user.profilePic || "/avatar.png"}
                   alt={user.fullName}
-                  className="size-10"
+                  className="size-10 rounded-full"
                 />
                 {onlineUsers.includes(user._id) && (
                   <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-2 ring-zinc-900"></span>

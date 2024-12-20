@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from 'cors';
 
+import {app,server,io}  from './lib/socket.js';// import server express app and socket.io instance 
 import connectDB from "./lib/db.js";
 
 import authRoutes from "./routers/auth.route.js";
 import messageRoutes from "./routers/message.route.js";
 
 dotenv.config({ path: "./src/.env" });
-const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
@@ -21,11 +21,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
 const PORT = process.env.PORT;
-console.log(PORT);
-app.listen(PORT, (err) => {
+
+server.listen(PORT, (err) => {
   if (err) console.log(err);
   else {
     console.log(`server is running on port ${PORT}`);
     connectDB();
   }
 });
+
