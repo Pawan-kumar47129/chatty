@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
-const SERVER_PORT = "http://localhost:5001";
+const SERVER_PORT =import.meta.env.MODE==='development'? "http://localhost:5001":"/";
 
 let socket = null;
 
