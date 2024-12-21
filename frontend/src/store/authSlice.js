@@ -19,7 +19,6 @@ const authSlice = createSlice({
     }
     ,
     clearAuthState: (state, action) => {
-      console.log(state);
       state.authStatus = false;
       state.authUser = null;
     },
@@ -34,25 +33,3 @@ export const { setAuthState, clearAuthState, setSocketConnected,setOnlineUsers }
 
 export default authSlice.reducer;
 
-// Thunks for handling side-effects
-/*
-// import { io } from "socket.io-client";
-// const SERVER_PORT = "http://localhost:5001";
-export const loginAuthState = (user) => async (dispatch, getState) => {
-  dispatch(setAuthState(user));
-  const { socket } = getState().auth;
-  if (socket?.connected) return;
-  const socketInstance = io(SERVER_PORT);
-  socketInstance.connect();
-  dispatch(setSocket(socketInstance));
-};
-
-export const logoutAuthState = () => async (dispatch, getState) => {
-  const { socket } = getState().auth;
-  if (socket?.connected) {
-    socket.disconnect();
-    dispatch(clearAuthState());
-  }
-  dispatch(clearSocket());
-};
-*/

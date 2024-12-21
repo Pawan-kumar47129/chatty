@@ -13,7 +13,7 @@ import AuthImagePattern from "./AuthImagePattern";
 import toast from "react-hot-toast";
 import authService from "../services/authService";
 import { useDispatch } from "react-redux";
-//import { loginAuthState } from "../store/authSlice";
+import { setAuthState } from "../store/authSlice";
 function SignupComponent() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -48,17 +48,24 @@ function SignupComponent() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
-    if (validateForm()) {
-      setLoading(true);
-      const res = await authService.signup(formData);//this call api for create user  in backend server
-      console.log(res);
-      if (res.success) {
-        dispatch(setAuthState(res.user));// set authState in global or redux store
-        toast.success(res.message);
-      } else {
-        toast.error(res.message);
+
+    try {
+      if (validateForm()) {
+        setLoading(true);
+        const res = await authService.signup(formData);//this call api for create user  in backend server
+        if (res.success) {
+          dispatch(setAuthState(res.user));// set authState in global or redux store
+          toast.success(res.message);
+        } else {
+          toast.error(res.message);
+        }
+        setLoading(false);
       }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!");
       setLoading(false);
+      
     }
   };
   return (
