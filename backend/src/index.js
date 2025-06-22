@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from 'cors';
 import path from 'path';
 
-import {app,server,io}  from './lib/socket.js';// import server express app and socket.io instance 
+import {app,server,io}  from './lib/socket.js';// import server express app and socket.io instance
 import connectDB from "./lib/db.js";
 
 import authRoutes from "./routers/auth.route.js";
@@ -14,7 +14,7 @@ dotenv.config({ path: "./src/.env" });
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin:"http://localhost:5173",
+  origin:process.env.CORS_ORIGIN,
   credentials:true,
 }))
 
