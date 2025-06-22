@@ -3,13 +3,6 @@ import {axiosInstance} from "../lib/axios.js"
 class MessageService{
     
     async getUsers({signal}){
-        let a=async()=>{
-           return new Promise((resolve,reject)=>{
-            setTimeout(()=>{
-                resolve("hello");
-            },2000)
-           }) 
-        }
         try {
             const response=await axiosInstance.get("/messages/users",{signal:signal});
             //await a();
@@ -23,7 +16,6 @@ class MessageService{
     async getMessages(selectedUserId){
         try {
             const response=await axiosInstance.get(`/messages/${selectedUserId}`);
-            console.log(response.data);
             return response.data;
         } catch (error) {
             console.log("Error in getMessages Services ",error.message);

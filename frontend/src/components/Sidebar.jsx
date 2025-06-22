@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import messageService from "../services/messageService";
 import { setAllUsers, setSelectedUser } from "../store/chatSlice";
@@ -16,7 +16,6 @@ function Sidebar() {
   const [search, setSearch] = useState("");
   const socket=getSocket();
   socket.on("getOnlineUsers",(userIds)=>{
-    console.log("online user")
     dispatch(setOnlineUsers(userIds))
   })
   useEffect(() => {
