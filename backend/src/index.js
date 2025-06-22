@@ -33,11 +33,11 @@ app.use("/api/messages", messageRoutes);
 // }
 const PORT = process.env.PORT;
 
-server.listen(PORT, (err) => {
+server.listen(PORT, async (err) => {
   if (err) console.log(err);
   else {
+    await connectDB();
     console.log(`server is running on port ${PORT}`);
-    connectDB();
   }
 });
 

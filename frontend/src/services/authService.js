@@ -1,5 +1,5 @@
 import { axiosInstance } from "../lib/axios";
-import {io} from "socket.io-client";
+
 
 class AuthService{
 
