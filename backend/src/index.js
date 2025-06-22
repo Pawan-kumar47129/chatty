@@ -17,7 +17,12 @@ app.use(cors({
   origin:process.env.CORS_ORIGIN,
   credentials:true,
 }))
-
+app.get("/",(req,res)=>{
+  res.status(200).json({
+    message:"server is running",
+    success:true,
+  });
+})
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 // if(process.env.NODE_ENV === 'production'){
