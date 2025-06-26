@@ -33,6 +33,5 @@ io.on('connection',(socket)=>{
       console.log(message);
     })
   });
-  
 
 export {app,server,io};

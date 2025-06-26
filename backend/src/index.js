@@ -27,11 +27,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 const PORT = process.env.PORT;
 
-server.listen(PORT, async (err) => {
-  if (err) console.log(err);
+connectDB().then(()=>{server.listen(PORT, async (err) => {
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
   else {
-    await connectDB();
     console.log(`server is running on port ${PORT}`);
   }
-});
-
+});})
