@@ -1,8 +1,9 @@
-import React, { memo, useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import { memo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoaderPage } from "../pages";
-function AuthLayout({ children, authentication = true }) {
+function AuthLayout({ children, authentication=true }) {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const authStatus = useSelector((state) => state.auth.authStatus);
@@ -18,7 +19,7 @@ function AuthLayout({ children, authentication = true }) {
       navigate("/");
     }
     setLoading(false);
-  }, [authStatus, authentication, navigate]);
+  }, [authStatus, authentication,navigate ,location.pathname]);
 
   return loading ? <LoaderPage /> : <div>{children}</div>;
 }

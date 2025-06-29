@@ -4,25 +4,18 @@ import messageService from "../services/messageService";
 import { setAllUsers, setSelectedUser } from "../store/chatSlice";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
 import {Users } from "lucide-react";
-import { getSocket } from "../services/socketServer";
-import { setOnlineUsers } from "../store/authSlice";
 
 function Sidebar() {
-  const { users, selectedUser } = useSelector((state) => state.chat);
-  const { onlineUsers } = useSelector((state) => state.auth);
+  const { allUsers, selectedUser,onlineUsers } = useSelector((state) => state.chat);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [filterUser, setFilterUser] = useState(users);
+  const [filterUser, setFilterUser] = useState(allUsers);
   const [search, setSearch] = useState("");
-  const socket=getSocket();
-  socket.on("getOnlineUsers",(userIds)=>{
-    dispatch(setOnlineUsers(userIds))
-  })
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
       const res = await messageService.getUsers({ signal: controller.signal });
-      if (res.success) {
+      if (res && res.success) {
         dispatch(setAllUsers(res.users));
       }
       setLoading(false);
@@ -34,14 +27,14 @@ function Sidebar() {
   useEffect(() => {
     let clearId = setTimeout(() => {
       setFilterUser(() => {
-        if (!search) return users;
-        return users.filter((user) =>
+        if (!search) return allUsers;
+        return allUsers.filter((user) =>
           user.fullName.toLowerCase().includes(search.toLowerCase())
         );
       });
     }, 100);
     return () => clearTimeout(clearId);
-  }, [search, users]);
+  }, [search, allUsers]);
   if (loading) return <SidebarSkeleton />;
   return (
     <aside

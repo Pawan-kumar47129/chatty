@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import authService from "../services/authService";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -33,11 +33,10 @@ function LoginComponent() {
     event.preventDefault();
     setError("");
     if(validateForm()){
-      setLoading(true); 
-        const res = await authService.login(formData);//this call api for login in backend server
-        if(res.success){
-          console.log(res);
-            dispatch(setAuthState(res.user));// set authState in global or redux store
+      setLoading(true);
+        const res = await authService.login(formData);
+        if(res && res.success){
+            dispatch(setAuthState({auth:res.user,token:res.token}));
             toast.success(res.message);
         }
         else{

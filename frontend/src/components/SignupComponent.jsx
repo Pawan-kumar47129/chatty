@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Eye,
   EyeOff,
@@ -32,7 +32,6 @@ function SignupComponent() {
     if (!formData.email.trim()) {
       setError("Email is required!");
       return false;
-      toast.error("Email is required!");
     }
     const emailPattern = /\S+@\S+\.\S+/;
     if (!emailPattern.test(formData.email)) {
@@ -52,9 +51,9 @@ function SignupComponent() {
     try {
       if (validateForm()) {
         setLoading(true);
-        const res = await authService.signup(formData);//this call api for create user  in backend server
-        if (res.success) {
-          dispatch(setAuthState(res.user));// set authState in global or redux store
+        const res = await authService.signup(formData);
+        if (res && res.success) {
+          dispatch(setAuthState({auth:res.user,token:res.token}));// set authState in global or redux store
           toast.success(res.message);
         } else {
           toast.error(res.message);
@@ -65,7 +64,6 @@ function SignupComponent() {
       console.log(error);
       toast.error("Something went wrong!");
       setLoading(false);
-      
     }
   };
   return (
@@ -77,7 +75,7 @@ function SignupComponent() {
           <div className="text-center mb-4">
             <div className="flex flex-col items-center gap-2 group">
               <div
-                className="size-12 rounded-xl bg-primary/10 flex items-center justify-center 
+                className="size-12 rounded-xl bg-primary/10 flex items-center justify-center
               group-hover:bg-primary/20 transition-colors"
               >
                 <MessageSquare className="size-6 text-primary" />

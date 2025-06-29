@@ -1,19 +1,18 @@
 import { LogOut, MessageSquare, Settings, User } from 'lucide-react';
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import { clearAuthState } from '../store/authSlice';
 import toast from 'react-hot-toast';
-
 function Navbar() {
-  const {authStatus,authUser}=useSelector((state)=>state.auth);
+  const {authStatus,auth}=useSelector((state)=>state.auth);
   const dispatch=useDispatch();
   const navigate=useNavigate();
   const handleLogout=async()=>{
     const res=await authService.logout();// this call api for logout api in backend server
     if(res.success){
       dispatch(clearAuthState());// delete authState from global or redux store
+      dispatch({type:"socket/disconnect"});
       toast.success(res.message);
       navigate('/login');
     }
@@ -43,14 +42,13 @@ function Navbar() {
               to={"/settings"}
               className={`
               btn btn-sm gap-2 transition-colors
-              
               `}
             >
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">Settings</span>
             </Link>
 
-            { authStatus && authUser && (
+            { authStatus && auth && (
               <>
                 <Link to={"/profile"} className={`btn btn-sm gap-2`}>
                   <User className="size-5" />

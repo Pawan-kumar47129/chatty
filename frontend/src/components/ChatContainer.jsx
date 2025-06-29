@@ -1,38 +1,20 @@
 import { memo } from "react";
-import { MessageSquare, User } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage, removeSeletedUser, setMessages } from "../store/chatSlice";
+import { removeSeletedUser, setMessages } from "../store/chatSlice";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import messageService from "../services/messageService";
 import { formatMessageTime } from "../lib/utils";
-import { getSocket } from "../services/socketServer";
 
 function ChatContainer() {
   const { selectedUser, messages } = useSelector((state) => state.chat);
-  const { authUser } = useSelector((state) => state.auth);
+  const { auth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const messageEndRef = useRef(null); // Reference for scrolling
-  const socket = getSocket();
-  // Register socket event
-  useEffect(() => {
-    const handleNewMessage = (newMessage) => {
-      if (newMessage.senderId !== selectedUser?._id) return;
-      dispatch(addMessage(newMessage));
-    };
-
-    // Add listener
-    socket.on("newMessage", handleNewMessage);
-
-    // Cleanup listener
-    return () => {
-      socket.off("newMessage", handleNewMessage);
-    };
-  }, [selectedUser, dispatch, socket]);
-
   const hideMessageBox = () => {
     //for small device
     dispatch(removeSeletedUser());
@@ -47,7 +29,7 @@ function ChatContainer() {
         setLoading(false);
       }
     })();
-  }, [selectedUser]);
+  }, [selectedUser,dispatch]);
 
   useEffect(() => {
     // Scroll to the last message when messages update
@@ -99,15 +81,15 @@ function ChatContainer() {
               <div
                 key={message._id}
                 className={`chat ${
-                  message.senderId === authUser?._id ? "chat-end" : "chat-start"
+                  message.senderId === auth?._id ? "chat-end" : "chat-start"
                 }`}
               >
                 <div className="chat-image avatar">
                   <div className="size-10 rounded-full border">
                     <img
                       src={
-                        message.senderId === authUser?._id
-                          ? authUser?.profilePic || "/avatar.png"
+                        message.senderId === auth?._id
+                          ? auth?.profilePic || "/avatar.png"
                           : selectedUser.profilePic || "/avatar.png"
                       }
                       alt="profile pic"

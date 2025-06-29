@@ -1,5 +1,5 @@
 import { Camera, Mail, User } from "lucide-react";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import authService from "../services/authService";
 import {setAuthState } from "../store/authSlice";
@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 function ProfileComponent() {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { authUser } = useSelector((state) => state.auth);
+  const { auth } = useSelector((state) => state.auth);
   const dispatch=useDispatch();
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -21,15 +21,14 @@ function ProfileComponent() {
       setSelectedImage(base64Image);
     };
     // send to server
-    console.log(file);
     const formData = new FormData();
     formData.append("profilePic", file);
 
     setLoading(true);
-    const res = await authService.updateProfile(formData);//this call api for update the profilePic in backend server
-    if (res.success) {
+    const res = await authService.updateProfile(formData);
+    if (res && res.success) {
       console.log(res);
-      dispatch(setAuthState(res.user)); // update authState in store 
+      dispatch(setAuthState({auth:res.user,token:res.token})); // update authState in store
       toast.success("Profile update successfully!");
     } else {
       console.log(res);
@@ -49,16 +48,16 @@ function ProfileComponent() {
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
             <img
-              src={selectedImage || authUser?.profilePic || "/avatar.png"}
+              src={selectedImage || auth?.profilePic || "/avatar.png"}
               alt="Profile"
               className="size-32 rounded-full object-cover border-4 "
             />
             <label
               htmlFor="avatar-upload"
               className={`
-                  absolute bottom-0 right-0 
+                  absolute bottom-0 right-0
                   bg-base-content hover:scale-105
-                  p-2 rounded-full cursor-pointer 
+                  p-2 rounded-full cursor-pointer
                   transition-all duration-200
                   ${loading ? "animate-pulse pointer-events-none" : ""}
                 `}
@@ -87,7 +86,7 @@ function ProfileComponent() {
               Full Name
             </div>
             <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-              {authUser?.fullName}
+              {auth?.fullName}
             </p>
           </div>
 
@@ -97,7 +96,7 @@ function ProfileComponent() {
               Email Address
             </div>
             <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-              {authUser?.email}
+              {auth?.email}
             </p>
           </div>
         </div>
@@ -107,7 +106,7 @@ function ProfileComponent() {
           <div className="space-y-3 text-sm">
             <div className="flex items-center justify-between py-2 border-b border-zinc-700">
               <span>Member Since</span>
-              <span>{authUser?.createdAt?.split("T")[0]}</span>
+              <span>{auth?.createdAt?.split("T")[0]}</span>
             </div>
             <div className="flex items-center justify-between py-2">
               <span>Account Status</span>
