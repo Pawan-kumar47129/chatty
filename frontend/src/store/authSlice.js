@@ -1,34 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = {
-  authUser: null,
+  auth: null,
+  token:null,
   authStatus: false,
-  socketConnected: false,
-  onlineUsers: [],
 };
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     setAuthState: (state, action) => {
-      state.authUser = action.payload;
+      state.auth = action.payload.user;
+      state.token=action.payload.token;
       state.authStatus = true;
-    },
-    setOnlineUsers:(state,action)=>{
-      state.onlineUsers=action.payload;
     }
     ,
-    clearAuthState: (state, action) => {
+    clearAuthState: (state) => {
       state.authStatus = false;
-      state.authUser = null;
-    },
-    setSocketConnected: (state, action) => {
-      state.socketConnected = action.payload;
-    },
+      state.auth = null;
+      state.token=null;
+    }
   },
 });
 
-export const { setAuthState, clearAuthState, setSocketConnected,setOnlineUsers } =
+export const { setAuthState, clearAuthState } =
   authSlice.actions;
 
 export default authSlice.reducer;
