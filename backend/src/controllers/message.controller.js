@@ -2,7 +2,6 @@ import User from "../models/user.models.js";
 
 import Message from "../models/message.models.js";
 
-import cloudinary from "../lib/cloudinary.js";
 import uploadOnCloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
 
@@ -41,8 +40,8 @@ export const getMessages = async (req, res) => {
       messages: messages,
     });
   } catch (error) {
-    console.log("Error in getMessages Controller: ", error.message);
-    res.status(500).json({ 
+    console.log("Error in get Messages Controller: ", error.message);
+    res.status(500).json({
       success:false,
       message: "Internal Server error" });
   }

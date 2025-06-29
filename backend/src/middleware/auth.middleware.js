@@ -3,7 +3,7 @@ import User from "../models/user.models.js";
 
 export const protectRoute=async(req,res,next)=>{
     try {
-        const token=req.cookies.jwt;
+        const token=req.cookies.chatty;
         if(!token){
             return res.status(401).json({
                 success:false,
@@ -25,7 +25,8 @@ export const protectRoute=async(req,res,next)=>{
             })
         }
         req.user=user;
-        next()
+        req.token=token;
+        next();
     } catch (error) {
         console.log("Error in protectRoute: ",error.message);
         res.status(500).json({
