@@ -4,7 +4,7 @@ export const generateToken = (userId, res) => {
     expiresIn: "7d",
   });
 
-  res.cookie("chatty", token, {
+  res.cookie("chat-token", token, {
     sameSite: "none",
     secure: true,
     httpOnly: true,

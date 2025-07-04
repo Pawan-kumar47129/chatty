@@ -3,7 +3,7 @@ import User from "../models/user.models.js";
 
 export const protectRoute=async(req,res,next)=>{
     try {
-        const token=req.cookies.chatty;
+        const token=req.cookies["chat-token"];
         if(!token){
             return res.status(401).json({
                 success:false,
