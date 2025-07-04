@@ -5,10 +5,10 @@ export const generateToken = (userId, res) => {
   });
 
   res.cookie("chatty", token, {
-    maxAge: 7 * 24 * 60 * 60 * 1000, //MS
-    httpOnly: true, //prevent XSS attacks cross-site scripting attacks
-    sameSite: "strict", //CSRF attacks cross-site request forgery attacks
-    secure: process.env.NODE_ENV !== "development",
+    sameSite: "none",
+    secure: true,
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
   return token;
 };
