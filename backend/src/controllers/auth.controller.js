@@ -106,7 +106,7 @@ export const login = async (req, res) => {
   }
 };
 export const logout = async (req, res) => {
-  res.cookie("chatty", "", { maxAge: 0 });
+  res.cookie("chat-token", "", { maxAge: 0 });
   res.status(200).json({
     success: true,
     message: "Logged out successfully",

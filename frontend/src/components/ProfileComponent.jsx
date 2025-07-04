@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 function ProfileComponent() {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { auth } = useSelector((state) => state.auth);
+  const { auth,token } = useSelector((state) => state.auth);
   const dispatch=useDispatch();
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -25,7 +25,7 @@ function ProfileComponent() {
     formData.append("profilePic", file);
 
     setLoading(true);
-    const res = await authService.updateProfile(formData);
+    const res = await authService.updateProfile(formData,token);
     if (res && res.success) {
       console.log(res);
       dispatch(setAuthState({auth:res.user,token:res.token})); // update authState in store

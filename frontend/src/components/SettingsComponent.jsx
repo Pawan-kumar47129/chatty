@@ -1,4 +1,4 @@
-import React from "react";
+
 import { THEMES } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "../store/themeSlice";

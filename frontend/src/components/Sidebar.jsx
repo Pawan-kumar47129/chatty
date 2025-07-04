@@ -7,6 +7,7 @@ import {Users } from "lucide-react";
 
 function Sidebar() {
   const { allUsers, selectedUser,onlineUsers } = useSelector((state) => state.chat);
+  const {token,auth} =useSelector((state)=>state.auth)
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [filterUser, setFilterUser] = useState(allUsers);
@@ -14,13 +15,13 @@ function Sidebar() {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const res = await messageService.getUsers();
+      const res = await messageService.getUsers(token);
       if (res && res.success) {
         dispatch(setAllUsers(res.users));
       }
       setLoading(false);
     })();
-  }, [dispatch]);
+  }, [dispatch,auth,token]);
 
 
   useEffect(() => {

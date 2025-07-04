@@ -11,7 +11,7 @@ import { formatMessageTime } from "../lib/utils";
 
 function ChatContainer() {
   const { selectedUser, messages } = useSelector((state) => state.chat);
-  const { auth } = useSelector((state) => state.auth);
+  const { auth,token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const messageEndRef = useRef(null); // Reference for scrolling
@@ -24,12 +24,12 @@ function ChatContainer() {
     (async () => {
       if (selectedUser) {
         setLoading(true);
-        const res = await messageService.getMessages(selectedUser._id);
+        const res = await messageService.getMessages(selectedUser._id,token);
         if (res.success) dispatch(setMessages(res.messages));
         setLoading(false);
       }
     })();
-  }, [selectedUser,dispatch]);
+  }, [selectedUser,token,dispatch]);
 
   useEffect(() => {
     // Scroll to the last message when messages update

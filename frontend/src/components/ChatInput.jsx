@@ -1,11 +1,12 @@
 import { Image, Send, X } from "lucide-react";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast"
 import messageService from "../services/messageService";
 import { addMessage } from "../store/chatSlice";
 
 function ChatInput() {
+    const {token}=useSelector((state)=>state.auth)
     const [inputMessage,setInputMessage]=useState("");
     const [imagePreview,setImagePreview]=useState(null);
     const [image,setImage]=useState(null);
@@ -38,7 +39,7 @@ function ChatInput() {
       setLoading(true);
       if(imagePreview)formData.append('image',image);
       if(inputMessage)formData.append('text',inputMessage.trim());
-      const res=await messageService.sendMessage(selectedUser._id,formData);
+      const res=await messageService.sendMessage(selectedUser._id,formData,token);
       if(res.success){
         dispatch(addMessage(res.newMessage))
       }
@@ -50,7 +51,6 @@ function ChatInput() {
       if(fileInputRef.current) fileInputRef.current.value="";
     }
   return (
-    
     <div className="p-2 border-t border-base-300 bg-base-100 rounded-xl">
      {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
