@@ -12,15 +12,14 @@ function Sidebar() {
   const [filterUser, setFilterUser] = useState(allUsers);
   const [search, setSearch] = useState("");
   useEffect(() => {
-    const controller = new AbortController();
     (async () => {
-      const res = await messageService.getUsers({ signal: controller.signal });
+      setLoading(true);
+      const res = await messageService.getUsers();
       if (res && res.success) {
         dispatch(setAllUsers(res.users));
       }
       setLoading(false);
     })();
-    return () => controller.abort();
   }, [dispatch]);
 
 

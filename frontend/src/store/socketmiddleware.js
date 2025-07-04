@@ -26,10 +26,12 @@ const socketMiddleware = (store) => (next) => (action) => {
       socket.connect();
       socket.on("connect", () => {
         store.dispatch(setConnected());
+        console.log.apply(socket);
       });
 
-      socket.on("disconnect", () => {
+      socket.on("disconnect", (reason) => {
         store.dispatch(setDisconnected());
+        console.log.apply(reason);
       });
 
       socket.on("newMessage", (message) => {
@@ -57,6 +59,7 @@ const socketMiddleware = (store) => (next) => (action) => {
       });
 
       socket.on("getOnlineUsers", (users) => {
+        console.log("online users",users);
         store.dispatch(setOnlineUsers(users));
       });
       break;

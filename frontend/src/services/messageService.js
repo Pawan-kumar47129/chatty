@@ -1,12 +1,13 @@
 
 import {axiosInstance} from "../lib/axios.js"
 class MessageService{
-    async getUsers({signal}){
+    async getUsers(){
         try {
-            const response=await axiosInstance.get("/messages/users",{signal:signal});
+            const response=await axiosInstance.get("/messages/users");
+            console.log(response);
             return response?.data;
         } catch (error) {
-            console.log("Error occure in getUsers ",error.message);
+            console.log("Error occure in getUsers ",error);
             return error?.response?.data;
         }
     }

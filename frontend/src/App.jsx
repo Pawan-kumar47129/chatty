@@ -18,7 +18,6 @@ import { AuthLayout, Navbar } from "./components";
 
 function App() {
   const themeMode = useSelector((state) => state.theme.themeMode);
-  // const authStatus = useSelector((state) => state.auth.authStatus);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
