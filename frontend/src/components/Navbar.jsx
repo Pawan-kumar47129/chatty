@@ -9,10 +9,11 @@ function Navbar() {
   const dispatch=useDispatch();
   const navigate=useNavigate();
   const handleLogout=async()=>{
-    const res=await authService.logout();// this call api for logout api in backend server
+    const res=await authService.logout();
     if(res.success){
-      dispatch(clearAuthState());// delete authState from global or redux store
+      dispatch(clearAuthState());
       dispatch({type:"socket/disconnect"});
+      localStorage.setItem('chat-token',"");
       toast.success(res.message);
       navigate('/login');
     }
@@ -23,7 +24,7 @@ function Navbar() {
   return (
     <div className='relative h-16'>
     <header
-      className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 
+      className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40
     backdrop-blur-lg bg-base-100/80 "
     >
       <div className="container mx-auto px-4 h-16">

@@ -2,9 +2,9 @@ import { axiosInstance } from "../lib/axios.js";
 class MessageService {
   async getUsers(token) {
     try {
+      console.log(token);
       const response = await axiosInstance.get(
         "/messages/users",
-        { token },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -23,7 +23,6 @@ class MessageService {
     try {
       const response = await axiosInstance.get(
         `/messages/${selectedUserId}`,
-        { token },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -41,7 +40,7 @@ class MessageService {
     try {
       const response = await axiosInstance.post(
         `/messages/send/${selectedUserId}`,
-        { ...messageData, token },
+        messageData,
         {
           headers: {
             "Content-Type": "multipart/form-data",

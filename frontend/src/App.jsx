@@ -23,7 +23,8 @@ function App() {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const res = await authService.checkAuth();
+      const token=localStorage.getItem("chat-token");
+      const res = await authService.checkAuth(token);
       if (res && res.success) {
         dispatch(setAuthState({user:res.user,token:res.token}));
         dispatch({ type: 'socket/connect', payload: { auth:res.user,token:res.token } });

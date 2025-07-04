@@ -37,6 +37,8 @@ function LoginComponent() {
         const res = await authService.login(formData);
         if(res && res.success){
             dispatch(setAuthState({auth:res.user,token:res.token}));
+            dispatch({ type: 'socket/connect', payload: { auth:res.user,token:res.token } });
+            localStorage.setItem('chat-token',res.token);
             toast.success(res.message);
         }
         else{

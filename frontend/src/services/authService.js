@@ -1,9 +1,13 @@
 import { axiosInstance } from "../lib/axios";
 
 class AuthService {
-  async checkAuth() {
+  async checkAuth(token) {
     try {
-      const response = await axiosInstance.get("/auth/check");
+      const response = await axiosInstance.get("/auth/check", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.log("checkAuth Services error :", error);
