@@ -9,8 +9,7 @@ import { addMessage, setOnlineUsers } from "./chatSlice.js";
 import { io } from "socket.io-client";
 
 let socket = null; // 🔁 middleware-scoped socket
-const SERVER_PORT =
-  import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
+const SERVER_PORT =import.meta.env.VITE_API_URI ;
 const socketMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case "socket/connect": {
